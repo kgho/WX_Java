@@ -22,7 +22,7 @@ public class TestWx {
 		// System.out.println(tm);
 
 		XStream stream = new XStream();
-		// 将 <entity.TextMessage> 替换为 <xml>
+		// 将 <entity.TextMessage> 替换为 <xml>,替换别名
 		stream.processAnnotations(TextMessage.class);
 		String xml = stream.toXML(tm);
 		System.out.println(xml);

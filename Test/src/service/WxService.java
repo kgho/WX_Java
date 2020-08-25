@@ -12,8 +12,15 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
+import com.thoughtworks.xstream.XStream;
+
 import entity.BaseMessage;
+import entity.ImageMessage;
+import entity.MusicMessage;
+import entity.NewsMessage;
 import entity.TextMessage;
+import entity.VideoMessage;
+import entity.VoiceMessage;
 
 public class WxService {
 	private static final String TOKEN = "test";
@@ -124,12 +131,29 @@ public class WxService {
 			break;
 		}
 
-		System.out.println(msg);
+		if (msg != null) {
+			// 把消息对象处理为xml数据包
+			return beanToXml(msg);
+		}
 		return null;
+
+	}
+
+	private static String beanToXml(BaseMessage msg) {
+		XStream stream = new XStream();
+		// 将 <entity.TextMessage> 替换为 <xml>,替换别名
+		stream.processAnnotations(TextMessage.class);
+		stream.processAnnotations(ImageMessage.class);
+		stream.processAnnotations(MusicMessage.class);
+		stream.processAnnotations(NewsMessage.class);
+		stream.processAnnotations(VideoMessage.class);
+		stream.processAnnotations(VoiceMessage.class);
+		String xml = stream.toXML(msg);
+		return xml;
 	}
 
 	private static BaseMessage dealTextMessage(Map<String, String> requestMap) {
-		TextMessage tm = new TextMessage(requestMap, "What?");
+		TextMessage tm = new TextMessage(requestMap, "处理成功。");
 		return tm;
 	}
 

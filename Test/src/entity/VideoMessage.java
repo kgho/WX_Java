@@ -2,10 +2,16 @@ package entity;
 
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("xml")
 public class VideoMessage extends BaseMessage {
 
+	@XStreamAlias("MediaId")
 	private String mediaId;
+	@XStreamAlias("Title")
 	private String title;
+	@XStreamAlias("Description")
 	private String description;
 
 	public VideoMessage(Map<String, String> requestMap, String mediaId, String title, String description) {

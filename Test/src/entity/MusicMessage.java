@@ -2,6 +2,9 @@ package entity;
 
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("xml")
 public class MusicMessage extends BaseMessage {
 
 	private Music music;

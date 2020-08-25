@@ -2,6 +2,8 @@ package entity;
 
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 public class BaseMessage {
 
 	public String getToUserName() {
@@ -36,9 +38,13 @@ public class BaseMessage {
 		this.msgType = msgType;
 	}
 
+	@XStreamAlias("ToUserName")
 	private String toUserName;
+	@XStreamAlias("FromUserName")
 	private String fromUserName;
+	@XStreamAlias("CreateTime")
 	private String createTime;
+	@XStreamAlias("MsgType")
 	private String msgType;
 
 	public BaseMessage(Map<String, String> requestMap) {
