@@ -12,6 +12,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
+import entity.BaseMessage;
+import entity.TextMessage;
+
 public class WxService {
 	private static final String TOKEN = "test";
 
@@ -69,21 +72,65 @@ public class WxService {
 	 * @return
 	 */
 	public static Map<String, String> parseRequest(InputStream is) {
-		Map<String,String> map = new HashMap<>();
+		Map<String, String> map = new HashMap<>();
 		SAXReader reader = new SAXReader();
 		try {
-			//读取输入流，获取文档对象
+			// 读取输入流，获取文档对象
 			Document document = reader.read(is);
-			//根据文档对象获取根节点
-			org.dom4j.Element root =  document.getRootElement();
-			//获取根节点的所有子节点
-			List<org.dom4j.Element> elements =   root.elements();
-			for(org.dom4j.Element e:elements) {
+			// 根据文档对象获取根节点
+			org.dom4j.Element root = document.getRootElement();
+			// 获取根节点的所有子节点
+			List<org.dom4j.Element> elements = root.elements();
+			for (org.dom4j.Element e : elements) {
 				map.put(e.getName(), e.getStringValue());
 			}
-		}catch(DocumentException e) {
+		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 		return map;
 	}
+
+	/**
+	 * 用于处理所有的事件和消息的回复
+	 * 
+	 * @param requestMap
+	 * @return 返回的数据包
+	 */
+	public static String getResponse(Map<String, String> requestMap) {
+		BaseMessage msg = null;
+		String msgType = requestMap.get("MsgType");
+		switch (msgType) {
+		// 处理文本消息
+		case "text":
+			msg = dealTextMessage(requestMap);
+			break;
+		case "image":
+
+			break;
+		case "voice":
+
+			break;
+		case "video":
+
+			break;
+		case "shortvideo":
+
+			break;
+		case "location":
+
+			break;
+		case "link":
+
+			break;
+		}
+
+		System.out.println(msg);
+		return null;
+	}
+
+	private static BaseMessage dealTextMessage(Map<String, String> requestMap) {
+		TextMessage tm = new TextMessage(requestMap, "What?");
+		return tm;
+	}
+
 }

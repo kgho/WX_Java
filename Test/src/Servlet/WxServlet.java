@@ -76,15 +76,7 @@ public class WxServlet extends HttpServlet {
 		System.out.println(requestMap);
 		
 		//准备回复数据包
-		String respXml="<xml>\r\n" + 
-				"  <ToUserName><![CDATA["+requestMap.get("FromUserName")+"]]></ToUserName>\r\n" + 
-				"  <FromUserName><![CDATA["+requestMap.get("ToUserName")+"]]></FromUserName>\r\n" + 
-				"  <CreateTime>"+System.currentTimeMillis()/1000+"</CreateTime>\r\n" + 
-				"  <MsgType><![CDATA[text]]></MsgType>\r\n" + 
-				"  <Content><![CDATA[Why?]]></Content>\r\n" + 
-				"</xml>\r\n" + 
-				"\r\n" + 
-				"";
+		String respXml= WxService.getResponse(requestMap);
 		System.out.println(respXml);
 		PrintWriter out = response.getWriter();
 		out.print(respXml);
