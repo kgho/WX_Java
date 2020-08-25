@@ -2,6 +2,9 @@ package entity;
 
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("xml")
 public class TextMessage extends BaseMessage {
 
 	private String content;
