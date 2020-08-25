@@ -21,9 +21,11 @@ import entity.NewsMessage;
 import entity.TextMessage;
 import entity.VideoMessage;
 import entity.VoiceMessage;
+import util.Util;
 
 public class WxService {
 	private static final String TOKEN = "test";
+	private static final String APPKEY = "a5f61cd9833a23816d252e6cd86309cb";
 
 	/**
 	 * 验证签名
@@ -153,8 +155,41 @@ public class WxService {
 	}
 
 	private static BaseMessage dealTextMessage(Map<String, String> requestMap) {
-		TextMessage tm = new TextMessage(requestMap, "处理成功。");
+		// 用户发来的内容
+		String msg = requestMap.get("Content");
+		// 调用方法返回聊天的内容
+		String resp = chat(msg);
+		TextMessage tm = new TextMessage(requestMap, resp);
 		return tm;
+	}
+
+	private static String chat(String msg) {
+
+		int ran1 = (int) (Math.random()*(9)+1); 
+		int ran2 = (int) (Math.random()*(19)+1);
+		
+		String result = null;
+		
+		//String url = "http://japi.juhe.cn/joke/content/list.from";// 请求接口地址
+		
+		String url = "http://v.juhe.cn/joke/content/list.php";// 请求接口地址
+			
+		Map params = new HashMap();// 请求参数
+		params.put("sort", "asc");// 类型，desc:指定时间之前发布的，asc:指定时间之后发布的
+		params.put("page", ran1);// 当前页数,默认1
+		params.put("pagesize", ran1);// 每次返回条数,默认1,最大20
+		params.put("time", "1418816972");// 时间戳（10位），如：1418816972
+		params.put("key", APPKEY);// 您申请的key
+
+		try {
+			result = Util.net(url, params, "GET");
+			System.out.println("GET");
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
