@@ -67,10 +67,29 @@ public class WxServlet extends HttpServlet {
 
 		// doGet(request, response);
 		System.out.println("post");
+		
+		request.setCharacterEncoding("utf8");
+		response.setCharacterEncoding("utf8");
 
 		// 处理消息和事件的推送
 		Map<String,String> requestMap = WxService.parseRequest(request.getInputStream());
 		System.out.println(requestMap);
+		
+		//准备回复数据包
+		String respXml="<xml>\r\n" + 
+				"  <ToUserName><![CDATA["+requestMap.get("FromUserName")+"]]></ToUserName>\r\n" + 
+				"  <FromUserName><![CDATA["+requestMap.get("ToUserName")+"]]></FromUserName>\r\n" + 
+				"  <CreateTime>"+System.currentTimeMillis()/1000+"</CreateTime>\r\n" + 
+				"  <MsgType><![CDATA[text]]></MsgType>\r\n" + 
+				"  <Content><![CDATA[Why?]]></Content>\r\n" + 
+				"</xml>\r\n" + 
+				"\r\n" + 
+				"";
+		System.out.println(respXml);
+		PrintWriter out = response.getWriter();
+		out.print(respXml);
+		out.flush();
+		out.close();
 
 	}
 
