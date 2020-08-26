@@ -3,6 +3,7 @@ package service;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
 
+import entity.Article;
 import entity.BaseMessage;
 import entity.ImageMessage;
 import entity.MusicMessage;
@@ -159,6 +161,16 @@ public class WxService {
 	private static BaseMessage dealTextMessage(Map<String, String> requestMap) {
 		// 用户发来的内容
 		String msg = requestMap.get("Content");
+
+		if (msg.equals("图文")) {
+			List<Article> articles = new ArrayList<>();
+			articles.add(new Article("这是图文消息的标题", "图文消息详情",
+					"http://mmbiz.qpic.cn/mmbiz_jpg/OYEhXYWLPNicLHBb6AMSQAUXYGwvd94wyTmVA8SmnbibuO1U6SjzM75fwd1dVQuvZochZsg6owh1ic3AjHSWfzn0g/0",
+					"www.baidu.com"));
+			NewsMessage nm = new NewsMessage(requestMap, articles);
+			return nm;
+		}
+
 		// 调用方法返回聊天的内容
 		String resp = chat(msg);
 		TextMessage tm = new TextMessage(requestMap, resp);
