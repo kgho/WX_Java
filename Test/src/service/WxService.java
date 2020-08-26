@@ -21,6 +21,8 @@ import entity.NewsMessage;
 import entity.TextMessage;
 import entity.VideoMessage;
 import entity.VoiceMessage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import util.Util;
 
 public class WxService {
@@ -165,26 +167,42 @@ public class WxService {
 
 	private static String chat(String msg) {
 
-		int ran1 = (int) (Math.random()*(9)+1); 
-		int ran2 = (int) (Math.random()*(19)+1);
-		
+		int ran1 = (int) (Math.random() * (9) + 1);
+
 		String result = null;
-		
-		//String url = "http://japi.juhe.cn/joke/content/list.from";// 请求接口地址
-		
+
+		// String url = "http://japi.juhe.cn/joke/content/list.from";// 请求接口地址
+
 		String url = "http://v.juhe.cn/joke/content/list.php";// 请求接口地址
-			
+
 		Map params = new HashMap();// 请求参数
 		params.put("sort", "asc");// 类型，desc:指定时间之前发布的，asc:指定时间之后发布的
 		params.put("page", ran1);// 当前页数,默认1
-		params.put("pagesize", ran1);// 每次返回条数,默认1,最大20
-		params.put("time", "1418816972");// 时间戳（10位），如：1418816972
+		params.put("pagesize", 1);// 每次返回条数,默认1,最大20
+		params.put("time", 1418816979);// 时间戳（10位），如：1418816972
 		params.put("key", APPKEY);// 您申请的key
 
 		try {
 			result = Util.net(url, params, "GET");
 			System.out.println("GET");
+			// 打印api返回的数据
 			System.out.println(result);
+
+			// 解析Json
+			JSONObject jsonObject = JSONObject.fromObject(result);
+			// 取出error_code
+			int code = jsonObject.getInt("error_code");
+			if (code != 0) {
+				return null;
+			}
+			// 取出返回的消息内容
+			JSONObject jsonObj = jsonObject.getJSONObject("result");
+
+			JSONArray jsonArr = jsonObj.getJSONArray("data");
+			String resp = jsonArr.getJSONObject(0).getString("content");
+
+			return resp;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
