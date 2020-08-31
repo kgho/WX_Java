@@ -164,9 +164,9 @@ public class WxService {
 
 		if (msg.equals("图文")) {
 			List<Article> articles = new ArrayList<>();
-			articles.add(new Article("这是图文消息的标题", "图文消息详情",
-					"http://mmbiz.qpic.cn/mmbiz_jpg/OYEhXYWLPNicLHBb6AMSQAUXYGwvd94wyTmVA8SmnbibuO1U6SjzM75fwd1dVQuvZochZsg6owh1ic3AjHSWfzn0g/0",
-					"www.baidu.com"));
+			articles.add(new Article("标题", "描述",
+					"http://mmbiz.qpic.cn/mmbiz_jpg/OYEhXYWLPN8FhVTmZlI3lIWctnZGDjbjGVUNXREC1ycjz39zgQqZC3S76ibrQvsJuoC6Wv81MxWHiaAU2B9Cyv7w/0",
+					"http://kgh.vipgz1.idcfengye.com/Test/"));
 			NewsMessage nm = new NewsMessage(requestMap, articles);
 			return nm;
 		}
@@ -198,7 +198,7 @@ public class WxService {
 			result = Util.net(url, params, "GET");
 			System.out.println("GET");
 			// 打印api返回的数据
-			System.out.println(result);
+			// System.out.println(result);
 
 			// 解析Json
 			JSONObject jsonObject = JSONObject.fromObject(result);
