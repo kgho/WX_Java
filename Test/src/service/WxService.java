@@ -50,11 +50,11 @@ public class WxService {
 		// 创建 token 对象
 		at = new AccessToken(token, expireIn);
 	}
-	
+
 	// 外部获取 token 方法
 	public static String getAccessToken() {
 		// 如果 token 过期了就重新获取
-		if(at==null||at.isExpired()) {
+		if (at == null || at.isExpired()) {
 			getToken();
 		}
 		return at.getAccessToken();
@@ -164,6 +164,12 @@ public class WxService {
 		case "link":
 
 			break;
+		case "event":
+			msg = dealEvent(requestMap);
+			break;
+		default:
+
+			break;
 		}
 
 		if (msg != null) {
@@ -172,6 +178,41 @@ public class WxService {
 		}
 		return null;
 
+	}
+
+	// 处理事件推送
+	private static BaseMessage dealEvent(Map<String, String> requestMap) {
+		String event = requestMap.get("Event");
+		switch (event) {
+		case "CLICK":
+			return dealClick(requestMap);
+		case "VIEW":
+			return dealView(requestMap);
+		default:
+
+			break;
+		}
+		return null;
+	}
+
+	// 处理View 类型按钮点击
+	private static BaseMessage dealView(Map<String, String> requestMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// 处理Click 类型按钮点击
+	private static BaseMessage dealClick(Map<String, String> requestMap) {
+		String key = requestMap.get("EventKey");
+		switch (key) {
+		case "1":
+			return new TextMessage(requestMap, "你点击了第一个一级菜单");
+		case "32":
+			break;
+		default:
+			break;
+		}
+		return null;
 	}
 
 	private static String beanToXml(BaseMessage msg) {
