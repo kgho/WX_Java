@@ -5,8 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -18,11 +20,41 @@ public class Util {
 	public static final int DEF_CONN_TIMEOUT = 30000;
 	public static final int DEF_READ_TIMEOUT = 30000;
 	public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
-
+	
 	// 配置您申请的KEY
 	public static final String APPKEY = "*************************";
 
-	// 往该URL发送Get请求
+	// 往指定地址发送Post请求
+	public static String post(String url, String data) {
+		try {
+			URL urlObj = new URL(url);
+			java.net.URLConnection connection = urlObj.openConnection();
+			// 要发送数据，需要设置为可发送状态
+			connection.setDoOutput(true);
+			// 获取输入流
+			OutputStream os = connection.getOutputStream();
+			// 写出数据
+			os.write(data.getBytes(DEF_CHATSET));
+			os.close();
+			// 获取输入流
+			InputStream is = connection.getInputStream();
+			byte[] b = new byte[1024];
+			int len;
+			StringBuilder sb = new StringBuilder();
+			while ((len = is.read(b)) != -1) {
+				sb.append(new String(b, 0, len));
+			}
+			return sb.toString();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	// 往指定地址发送Get请求
 	public static String get(String url) {
 		try {
 			URL urlObj = new URL(url);
@@ -31,9 +63,9 @@ public class Util {
 			InputStream is = connection.getInputStream();
 			byte[] b = new byte[1024];
 			int len;
-			StringBuilder sb=new StringBuilder();
-			while((len=is.read(b))!=-1){
-				sb.append(new String(b,0,len));
+			StringBuilder sb = new StringBuilder();
+			while ((len = is.read(b)) != -1) {
+				sb.append(new String(b, 0, len));
 			}
 			return sb.toString();
 		} catch (Exception e) {

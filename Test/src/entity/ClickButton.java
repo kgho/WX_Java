@@ -21,8 +21,8 @@ public class ClickButton extends AbstractButton {
 		this.key = key;
 	}
 
-	public ClickButton(String name, String type) {
+	public ClickButton(String name, String key) {
 		super(name);
-		this.type = type;
+		this.key = key;
 	}
 }
