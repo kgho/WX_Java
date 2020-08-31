@@ -15,6 +15,7 @@ import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
 
+import entity.AccessToken;
 import entity.Article;
 import entity.BaseMessage;
 import entity.ImageMessage;
@@ -30,6 +31,34 @@ import util.Util;
 public class WxService {
 	private static final String TOKEN = "test";
 	private static final String APPKEY = "a5f61cd9833a23816d252e6cd86309cb";
+
+	private static final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	private static final String APPID = "wx6f2f69bf193c2c3f";
+	private static final String APPSECRET = "3470f23a5f8d75c24762793851e596ee";
+
+	// 保存 token
+	private static AccessToken at;
+
+	// 获取token
+	private static void getToken() {
+		String url = GET_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
+		String tokenStr = Util.get(url);
+		// System.out.println(tokenStr);
+		JSONObject jsonObject = JSONObject.fromObject(tokenStr);
+		String token = jsonObject.getString("access_token");
+		String expireIn = jsonObject.getString("expires_in");
+		// 创建 token 对象
+		at = new AccessToken(token, expireIn);
+	}
+	
+	// 外部获取 token 方法
+	public static String getAccessToken() {
+		// 如果 token 过期了就重新获取
+		if(at==null||at.isExpired()) {
+			getToken();
+		}
+		return at.getAccessToken();
+	}
 
 	/**
 	 * 验证签名

@@ -11,6 +11,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import sun.net.www.URLConnection;
+
 public class Util {
 	public static final String DEF_CHATSET = "UTF-8";
 	public static final int DEF_CONN_TIMEOUT = 30000;
@@ -19,6 +21,26 @@ public class Util {
 
 	// 配置您申请的KEY
 	public static final String APPKEY = "*************************";
+
+	// 往该URL发送Get请求
+	public static String get(String url) {
+		try {
+			URL urlObj = new URL(url);
+			// 开链接
+			java.net.URLConnection connection = urlObj.openConnection();
+			InputStream is = connection.getInputStream();
+			byte[] b = new byte[1024];
+			int len;
+			StringBuilder sb=new StringBuilder();
+			while((len=is.read(b))!=-1){
+				sb.append(new String(b,0,len));
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 *

@@ -8,9 +8,16 @@ import org.junit.Test;
 import com.thoughtworks.xstream.XStream;
 
 import entity.TextMessage;
+import service.WxService;
 
 public class TestWx {
 
+	@Test
+	public void testToken() {
+		System.out.println(WxService.getAccessToken());
+		System.out.println(WxService.getAccessToken());
+	}
+	
 	@Test
 	public void testMsg() {
 		Map<String, String> map = new HashMap<>();
