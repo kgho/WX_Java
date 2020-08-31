@@ -7,17 +7,46 @@ import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
 
+import entity.AbstractButton;
+import entity.Button;
+import entity.ClickButton;
+import entity.PhotoOrAlbumButton;
+import entity.SubButton;
 import entity.TextMessage;
+import entity.ViewButton;
+import net.sf.json.JSONObject;
 import service.WxService;
 
 public class TestWx {
+
+	@Test
+	public void testButton() {
+		// 创建菜单对象
+		Button btn = new Button();
+		// 第一个一级菜单
+		btn.getButton().add(new ClickButton("一级点击", "1"));
+		// 第二个一级菜单
+		btn.getButton().add(new ViewButton("一级跳转","http://www.baidu.com"));
+		// 创建第三个一级菜单
+		SubButton sb = new SubButton("有子菜单");
+		// 为第三个一级菜单增加子菜单
+		sb.getSub_button().add(new PhotoOrAlbumButton("传图","31"));
+		sb.getSub_button().add(new ClickButton("点击","32"));
+		sb.getSub_button().add(new ViewButton("网易新闻","http://news.163.com"));
+		//加入第三个一级菜单
+		btn.getButton().add(sb);
+
+		// 转换为Json
+		JSONObject jsonObject = JSONObject.fromObject(btn);
+		System.out.println(jsonObject.toString());
+	}
 
 	@Test
 	public void testToken() {
 		System.out.println(WxService.getAccessToken());
 		System.out.println(WxService.getAccessToken());
 	}
-	
+
 	@Test
 	public void testMsg() {
 		Map<String, String> map = new HashMap<>();
