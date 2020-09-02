@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
+import com.baidu.aip.ocr.AipOcr;
 import com.thoughtworks.xstream.XStream;
 
 import entity.AccessToken;
@@ -32,9 +34,15 @@ public class WxService {
 	private static final String TOKEN = "test";
 	private static final String APPKEY = "a5f61cd9833a23816d252e6cd86309cb";
 
+	// 微信公众号
 	private static final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String APPID = "wx6f2f69bf193c2c3f";
 	private static final String APPSECRET = "3470f23a5f8d75c24762793851e596ee";
+
+	// 百度AI
+	public static final String APP_ID = "22487802";
+	public static final String API_KEY = "7wMFnw4nDUmMPAibuUgQ02Kr";
+	public static final String SECRET_KEY = "ITBgzkxW2oszWS6LVSpoyilPPZb6NEDi";
 
 	// 保存 token
 	private static AccessToken at;
@@ -181,8 +189,37 @@ public class WxService {
 	}
 
 	private static BaseMessage dealImage(Map<String, String> requestMap) {
-		// TODO Auto-generated method stub
-		return null;
+
+		// 初始化一个AipOcr
+		AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+		// 可选：设置网络连接参数
+		client.setConnectionTimeoutInMillis(2000);
+		client.setSocketTimeoutInMillis(60000);
+
+		// 调用接口
+		String path = requestMap.get("PicUrl");
+
+		// 本地图片
+		// org.json.JSONObject res = client.basicGeneral(path, new HashMap<String,
+		// String>());
+		// 网络图片
+		org.json.JSONObject res = client.generalUrl(path, new HashMap<String, String>());
+
+		System.out.println(res.toString(2));
+
+		String json = res.toString();
+		// 转为jsonObject
+		JSONObject jsonObject = JSONObject.fromObject(json);
+		JSONArray jsonArray = jsonObject.getJSONArray("words_result");
+		Iterator<JSONObject> it = jsonArray.iterator();
+		StringBuilder sb = new StringBuilder();
+		while (it.hasNext()) {
+			JSONObject next = it.next();
+			sb.append(next.getString("words"));
+		}
+
+		return new TextMessage(requestMap, sb.toString());
 	}
 
 	// 处理事件推送
