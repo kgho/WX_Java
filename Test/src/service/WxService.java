@@ -147,7 +147,7 @@ public class WxService {
 			msg = dealTextMessage(requestMap);
 			break;
 		case "image":
-
+			msg = dealImage(requestMap);
 			break;
 		case "voice":
 
@@ -178,6 +178,11 @@ public class WxService {
 		}
 		return null;
 
+	}
+
+	private static BaseMessage dealImage(Map<String, String> requestMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// 处理事件推送
