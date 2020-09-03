@@ -25,6 +25,20 @@ public class TestWx {
     public static final String API_KEY = "7wMFnw4nDUmMPAibuUgQ02Kr";
     public static final String SECRET_KEY = "ITBgzkxW2oszWS6LVSpoyilPPZb6NEDi";
 	
+    
+    @Test
+    public void test() {
+    	System.out.println(WxService.getAccessToken());
+    }
+    
+    // 添加临时素材
+    @Test
+    public void testUpload() {
+    	String file = "C:\\Users\\Admin\\Desktop\\2.png";
+    	String result = WxService.upload(file, "image");
+    	System.out.println(result);
+    }
+    
 	@Test
 	public void testPic() {
 		// 初始化一个AipOcr

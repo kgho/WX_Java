@@ -16,7 +16,7 @@ public class CreateMenu {
 		// 第一个一级菜单
 		btn.getButton().add(new ClickButton("一级点击", "1"));
 		// 第二个一级菜单
-		btn.getButton().add(new ViewButton("一级跳转", "http://www.baidu.com"));
+		btn.getButton().add(new ViewButton("主页", "http://kgh.vipgz1.idcfengye.com/Test/"));
 		// 创建第三个一级菜单
 		SubButton sb = new SubButton("有子菜单");
 		// 为第三个一级菜单增加子菜单
