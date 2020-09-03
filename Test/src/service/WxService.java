@@ -2,9 +2,14 @@ package service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.SocketException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -234,6 +239,23 @@ public class WxService {
 		String event = requestMap.get("Event");
 		switch (event) {
 		case "CLICK":
+			System.out.println("StartGame");
+
+			try {
+				DatagramSocket socket = new DatagramSocket();
+				String s = "StartGame";
+				byte[] buffer = s.getBytes();
+				DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
+						InetAddress.getByName("127.0.0.1"), 8001);
+				socket.send(packet);
+				socket.close();
+				System.out.println(s);
+			} catch (SocketException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			return dealClick(requestMap);
 		case "VIEW":
 			return dealView(requestMap);
