@@ -20,25 +20,30 @@ import service.WxService;
 
 public class TestWx {
 
-	 //设置APPID/AK/SK
-    public static final String APP_ID = "22487802";
-    public static final String API_KEY = "7wMFnw4nDUmMPAibuUgQ02Kr";
-    public static final String SECRET_KEY = "ITBgzkxW2oszWS6LVSpoyilPPZb6NEDi";
-	
-    
-    @Test
-    public void test() {
-    	System.out.println(WxService.getAccessToken());
-    }
-    
-    // 添加临时素材
-    @Test
-    public void testUpload() {
-    	String file = "C:\\Users\\Admin\\Desktop\\2.png";
-    	String result = WxService.upload(file, "image");
-    	System.out.println(result);
-    }
-    
+	// 设置APPID/AK/SK
+	public static final String APP_ID = "22487802";
+	public static final String API_KEY = "7wMFnw4nDUmMPAibuUgQ02Kr";
+	public static final String SECRET_KEY = "ITBgzkxW2oszWS6LVSpoyilPPZb6NEDi";
+
+	@Test
+	public void testQrCode() {
+		String ticket = WxService.getQrCodeTicket();
+		System.out.println(ticket);
+	}
+
+	@Test
+	public void test() {
+		System.out.println(WxService.getAccessToken());
+	}
+
+	// 添加临时素材
+	@Test
+	public void testUpload() {
+		String file = "C:\\Users\\Admin\\Desktop\\2.png";
+		String result = WxService.upload(file, "image");
+		System.out.println(result);
+	}
+
 	@Test
 	public void testPic() {
 		// 初始化一个AipOcr
@@ -49,8 +54,8 @@ public class TestWx {
 		client.setSocketTimeoutInMillis(60000);
 
 		// 可选：设置代理服务器地址, http和socket二选一，或者均不设置
-		//client.setHttpProxy("proxy_host", proxy_port); // 设置http代理
-		//client.setSocketProxy("proxy_host", proxy_port); // 设置socket代理
+		// client.setHttpProxy("proxy_host", proxy_port); // 设置http代理
+		// client.setSocketProxy("proxy_host", proxy_port); // 设置socket代理
 
 		// 可选：设置log4j日志输出格式，若不设置，则使用默认配置
 		// 也可以直接通过jvm启动参数设置此环境变量

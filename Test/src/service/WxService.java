@@ -245,8 +245,8 @@ public class WxService {
 				DatagramSocket socket = new DatagramSocket();
 				String s = "StartGame";
 				byte[] buffer = s.getBytes();
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
-						InetAddress.getByName("127.0.0.1"), 8001);
+				DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("127.0.0.1"),
+						8001);
 				socket.send(packet);
 				socket.close();
 				System.out.println(s);
@@ -418,6 +418,17 @@ public class WxService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	// 获取带参数的二维码ticket
+	public static String getQrCodeTicket() {
+		String at = getAccessToken();
+		String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + at;
+		// 生成临时字符串二维码
+		String data = "{\"expire_seconds\": 600, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"KGH\"}}}";
+		String result = Util.post(url, data);
+		String ticket = JSONObject.fromObject(result).getString("ticket");
+		return ticket;
 	}
 
 }
