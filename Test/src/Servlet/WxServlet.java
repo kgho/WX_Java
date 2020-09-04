@@ -1,4 +1,4 @@
-package Servlet;
+package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,16 +67,16 @@ public class WxServlet extends HttpServlet {
 
 		// doGet(request, response);
 		System.out.println("post");
-		
+
 		request.setCharacterEncoding("utf8");
 		response.setCharacterEncoding("utf8");
 
 		// 处理消息和事件的推送
-		Map<String,String> requestMap = WxService.parseRequest(request.getInputStream());
+		Map<String, String> requestMap = WxService.parseRequest(request.getInputStream());
 		System.out.println(requestMap);
-		
-		//准备回复数据包
-		String respXml= WxService.getResponse(requestMap);
+
+		// 准备回复数据包
+		String respXml = WxService.getResponse(requestMap);
 		System.out.println(respXml);
 		PrintWriter out = response.getWriter();
 		out.print(respXml);
