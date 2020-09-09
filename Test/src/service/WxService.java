@@ -312,6 +312,18 @@ public class WxService {
 			return nm;
 		}
 
+		if (msg.equals("登录")) {
+			// String url =
+			// "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6f2f69bf193c2c3f&redirect_uri=http://www.kgho.info/Test/GetUserInfo&response_type=code&scope=snsapi_userinfo#wechat_redirect";
+
+			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+			url = url.replace("APPID", "wx6f2f69bf193c2c3f")
+					.replace("REDIRECT_URI", "http://www.kgho.info/Test/GetUserInfo")
+					.replace("SCOPE", "snsapi_userinfo");
+			TextMessage tm = new TextMessage(requestMap, "点击<a href=\"" + url + "\">这里</a>登录");
+			return tm;
+		}
+
 		// 调用方法返回聊天的内容
 		String resp = chat(msg);
 		TextMessage tm = new TextMessage(requestMap, resp);
